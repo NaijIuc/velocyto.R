@@ -1099,7 +1099,9 @@ show.velocity.on.embedding.cor <- function(emb,vel,n=100,cell.colors=NULL, corr.
   cat("transition probs ... ")
   tp <- exp(cc/corr.sigma)*emb.knn
   #diag(tp) <- 0; #  should we allow the self-corelation for scaling?
-  tp <- t(t(tp)/Matrix::colSums(tp)); # tp shows transition from a given column cell to different row cells
+  tp <- t(t(tp)/Matrix::colSums(tp, na.rm =TRUE)); # tp shows transition from a given column cell to different row cells
+  tp <- as.matrix(tp)
+  tp[is.na(tp)] <- 0
   tp <- as(tp,'dgCMatrix')
   cat("done\n")
   if(!is.null(show.cell)) {
